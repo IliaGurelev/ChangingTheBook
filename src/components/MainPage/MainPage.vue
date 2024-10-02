@@ -33,8 +33,8 @@ const props = defineProps({
 .main-page {
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  row-gap: 20px;
+  padding: 20px 30px;
+  row-gap: 50px;
 }
 
 header {

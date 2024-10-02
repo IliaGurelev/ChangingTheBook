@@ -5,6 +5,7 @@
                 <Book 
                     :previewImage=book.previewImage
                     :name=book.name
+                    :description=book.description
                 />
             </a>
         </li>

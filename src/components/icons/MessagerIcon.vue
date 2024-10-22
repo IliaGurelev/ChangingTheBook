@@ -24,9 +24,15 @@
   </svg>
 </template>
 
-<script setup></script>
+<script setup>
+</script>
 
 <style lang="scss" scoped>
+svg {
+  background-color: #f8f0e4;
+  border-radius: 50%;
+}
+
 .st0 {
   fill: #7688a1;
 }

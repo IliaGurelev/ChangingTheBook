@@ -33,6 +33,7 @@ const props = defineProps({
         max-height: 236px;
         margin-bottom: 7px;
         border-radius: 3px;
+        background-color: #e9e5e2;
         width: 100%;
         height: 236px;
         overflow: hidden;
@@ -45,6 +46,11 @@ const props = defineProps({
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transition: transform 0.3s;
+
+        &:hover {
+            transform: scale(1.1);
+        }
     }
 
     &__name {

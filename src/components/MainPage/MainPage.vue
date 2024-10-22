@@ -6,7 +6,7 @@
       <input type="text" class="search__line" placeholder="Найти книгу" />
     </div>
     <button type="button" class="search__button">поиск</button>
-    <MessagerIcon class="message-icon" />
+    <MessagerIcon class="message-button" />
   </header>
   <main>
     <BookList 
@@ -17,15 +17,14 @@
 </template>
 
 <script setup>
+import {onMounted} from 'vue';
+
 import SearchIcon from '@/components/icons/SearchIcon.vue'
 import MessagerIcon from '@/components/icons/MessagerIcon.vue'
 import BookList from '@/components/MainPage/BookList.vue'
 
-const props = defineProps({
-  books: {
-    type: Array,
-    required: true
-  }
+onMounted({
+  
 })
 </script>
 
@@ -81,7 +80,7 @@ header {
       background: transparent;
       overflow: hidden;
       cursor: pointer;
-      z-index: 1;
+      z-index: 1; 
 
       &::before {
         content: '';
@@ -90,15 +89,28 @@ header {
         left: -2.5%;
         width: 105%;
         height: 105%;
-        background: linear-gradient(60deg, #74699c 15%, #6eaf72, #fcba65, #db4d51 85%);
+        background: linear-gradient(60deg, #74699c 20%, #6eaf72, #fcba65, #db4d51 85%);
         filter: blur(3px);
+        transition: transform 0.3s;
         z-index: -1;
+      }
+
+      &:hover::before {
+        transform: scale(120%);
       }
     }
   }
 
-  .message-icon {
-    max-width: 50px;
+  .message-button {
+    max-width: 54px;
+    width: 100%;
+    cursor: pointer;
+    padding: 7px;
+    transition: padding 0.3s;
+
+    &:hover {
+      padding: 8px;
+    }
   }
 }
 </style>

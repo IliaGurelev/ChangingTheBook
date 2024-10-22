@@ -7,7 +7,8 @@
     </div>
     <button type="button" class="search__button">поиск</button>
     <MessagerIcon class="message-button" />
-    <UserIcon class="" />
+    <UserButton v-if="!isActiveUser" class="user-button" @click="() => changeActiveUser(true)"/>
+    <UserPopup v-else class="user-popup" @click="changeActiveUser(false)" />
   </header>
   <main>
     <BookList 
@@ -25,9 +26,12 @@ import { fetchBooks } from '@/apiService';
 import SearchIcon from '@/components/icons/SearchIcon.vue'
 import MessagerIcon from '@/components/icons/MessagerIcon.vue'
 import BookList from '@/components/BookList.vue'
-import UserIcon from '@/components/icons/UserIcon.vue';
+import UserButton from '@/components/UserButton.vue';
+import UserPopup from '@/components/UserPopup.vue';
 
 const books = ref([]);
+
+const isActiveUser = ref(false);
 
 async function loadData() {
   try {
@@ -36,6 +40,10 @@ async function loadData() {
     console.error("Ошибка загрузки данных: ", error);
   }
 } 
+
+function changeActiveUser(state) {
+  isActiveUser.value = state;
+}
 
 onMounted(() => {
   loadData();
@@ -51,6 +59,7 @@ onMounted(() => {
 }
 
 header {
+  position: relative;
   display: flex;
   column-gap: 20px;
   height: 54px;
@@ -125,6 +134,13 @@ header {
     &:hover {
       padding: 8px;
     }
+  }
+
+  .user-popup {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
   }
 }
 </style>

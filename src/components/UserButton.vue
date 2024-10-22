@@ -1,6 +1,6 @@
 <template>
   <div class="wrap">
-    <img class="image" src="../../../public/png-klev-club-p-emodzi-aifon-png-9.png" alt="">
+    <img class="image" src="@/assets/avatar1.png" alt="">
   </div>
 </template>
 

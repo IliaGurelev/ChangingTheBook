@@ -1,9 +1,9 @@
 <template>
-  <MainPage class="main-page" :books="ads"/>
+  <MainPage class="main-page"/>
 </template>
 
 <script setup>
-import MainPage from '@/components/MainPage/MainPage.vue'
+import MainPage from '@/views/MainPage.vue'
 </script>
 
 <style scoped lang="scss">

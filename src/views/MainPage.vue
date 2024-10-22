@@ -7,24 +7,38 @@
     </div>
     <button type="button" class="search__button">поиск</button>
     <MessagerIcon class="message-button" />
+    <UserIcon class="" />
   </header>
   <main>
     <BookList 
-      :books="props.books"
+      :books="books"
     />
   </main>
 </div>
 </template>
 
 <script setup>
-import {onMounted} from 'vue';
+import {onMounted, ref} from 'vue';
+
+import { fetchBooks } from '@/apiService';
 
 import SearchIcon from '@/components/icons/SearchIcon.vue'
 import MessagerIcon from '@/components/icons/MessagerIcon.vue'
-import BookList from '@/components/MainPage/BookList.vue'
+import BookList from '@/components/BookList.vue'
+import UserIcon from '@/components/icons/UserIcon.vue';
 
-onMounted({
-  
+const books = ref([]);
+
+async function loadData() {
+  try {
+    books.value = await fetchBooks();
+  } catch(error) {
+    console.error("Ошибка загрузки данных: ", error);
+  }
+} 
+
+onMounted(() => {
+  loadData();
 })
 </script>
 

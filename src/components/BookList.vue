@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import Book from '@/components/MainPage/Book.vue'
+import Book from '@/components/Book.vue'
 
 const props = defineProps({
     books: {

@@ -16,7 +16,7 @@ const pool = new Pool({
   host: 'localhost',
   database: 'ExchangeBook',
   password: '0000',
-  port: 5432, 
+  port: 5434, 
 });
 
 pool.query('SELECT NOW()', (err, res) => {

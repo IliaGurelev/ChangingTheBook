@@ -52,7 +52,7 @@ svg {
   fill: #cfe5e4;
 }
 .st6 {
-  fill: #ffffff;
+  fill: #f8f0e4;
 }
 .st7 {
   fill: #eef1f6;
@@ -64,7 +64,7 @@ svg {
   fill: #fff383;
 }
 .st10 {
-  fill: #70b7d6;
+  fill: #9e7db6 ;
 }
 .st11 {
   fill: #ffaec3;

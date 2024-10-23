@@ -7,8 +7,9 @@
     </div>
     <button type="button" class="search__button">поиск</button>
     <MessagerIcon class="message-button" />
-    <UserButton v-if="!isActiveUser" class="user-button" @click="() => changeActiveUser(true)"/>
-    <UserPopup v-else class="user-popup" @click="changeActiveUser(false)" />
+    <ButtonStitched v-if="user == null" text="Войти" />
+    <UserButton  v-if="!isActiveUser && user != null" class="user-button" @click="() => changeActiveUser(true)"/>
+    <UserPopup v-else-if="isActiveUser && user != null" class="user-popup" @click="changeActiveUser(false)" />
   </header>
   <main>
     <BookList 
@@ -28,9 +29,10 @@ import MessagerIcon from '@/components/icons/MessagerIcon.vue'
 import BookList from '@/components/BookList.vue'
 import UserButton from '@/components/UserButton.vue';
 import UserPopup from '@/components/UserPopup.vue';
+import ButtonStitched from '@/components/ButtonStitched.vue';
 
 const books = ref([]);
-
+const user = ref(null);
 const isActiveUser = ref(false);
 
 async function loadData() {

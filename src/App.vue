@@ -1,9 +1,9 @@
 <template>
-  <MainPage class="main-page"/>
+  <RouterView />
 </template>
 
 <script setup>
-import MainPage from '@/views/MainPage.vue'
+import { RouterView } from 'vue-router';
 </script>
 
 <style scoped lang="scss">

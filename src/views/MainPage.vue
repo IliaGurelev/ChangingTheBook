@@ -7,7 +7,9 @@
     </div>
     <button type="button" class="search__button">поиск</button>
     <MessagerIcon class="message-button" />
-    <ButtonStitched v-if="user == null" text="Войти" />
+    <RouterLink class="login-button" to="/login" v-if="user == null">
+      <ButtonStitched text="Войти" />
+    </RouterLink>
     <UserButton  v-if="!isActiveUser && user != null" class="user-button" @click="() => changeActiveUser(true)"/>
     <UserPopup v-else-if="isActiveUser && user != null" class="user-popup" @click="changeActiveUser(false)" />
   </header>
@@ -21,6 +23,7 @@
 
 <script setup>
 import {onMounted, ref} from 'vue';
+import { RouterLink } from 'vue-router';
 
 import { fetchBooks } from '@/apiService';
 
@@ -136,6 +139,12 @@ header {
     &:hover {
       padding: 8px;
     }
+  }
+
+  .login-button {
+    button {
+      height: 100%;
+    }  
   }
 
   .user-popup {

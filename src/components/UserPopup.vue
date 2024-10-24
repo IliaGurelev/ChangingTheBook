@@ -2,7 +2,7 @@
   <div class="popup">
     <div class="wrap">
       <p class="email">{{ user.mail }}</p>
-      <button class="button-exit"><span>Выйти</span></button>
+      <button @click="$emit('logout')" class="button-exit"><span>Выйти</span></button>
     </div>
     <img class="avatar" src="@/assets/avatar1.png" alt="">
   </div>

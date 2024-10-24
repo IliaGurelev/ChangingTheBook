@@ -16,3 +16,16 @@ export async function fetchBooks() {
     throw error;
   }
 }
+
+export async function loginUser(email_, password_) {
+    try {
+      const response = await apiClient.post('/login', {
+      email: email_,
+      password: password_
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+} 

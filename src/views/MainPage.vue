@@ -11,7 +11,11 @@
       <ButtonStitched text="Войти" />
     </RouterLink>
     <UserButton  v-if="!isActiveUser && user != null" class="user-button" @click="() => changeActiveUser(true)"/>
-    <UserPopup v-else-if="isActiveUser && user != null" class="user-popup" @click="changeActiveUser(false)" />
+    <UserPopup v-else-if="isActiveUser && user != null" 
+      class="user-popup" 
+      @click="changeActiveUser(false)" 
+      @logout="logoutUser"
+    />
   </header>
   <main>
     <BookList 
@@ -50,8 +54,14 @@ function changeActiveUser(state) {
   isActiveUser.value = state;
 }
 
+function logoutUser() {
+  localStorage.removeItem('user');
+  user.value = null;
+}
+
 onMounted(() => {
   loadData();
+  user.value = localStorage.getItem('user');
 })
 </script>
 

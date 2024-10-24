@@ -4,23 +4,44 @@
       <Logo />
     </RouterLink>
   </header>
-  <form class="login-form">
+  <div class="login-form">
     <h1 class="title">Войти</h1>
+    <p class= "message">{{ message }}</p>
     <div class="input-wrap">
       <label class="label" for="">Почта</label>
-      <input class="input" type="text">
+      <input v-model="email" class="input" type="text">
     </div>
     <div class="input-wrap">
       <label class="label" for="">Пароль</label>
-      <input class="input" type="text">
+      <input v-model="password" class="input" type="text">
     </div>
-    <button class="button">Войти</button>
-  </form>
+    <button class="button" @click="clickLogin">Войти</button>
+  </div>
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import { RouterLink, useRouter } from 'vue-router';
+
 import Logo from '@/components/Logo.vue';
-import { RouterLink } from 'vue-router';
+import { loginUser } from '@/apiService';
+
+const email = ref('');
+const password = ref('');
+const message = ref('');
+
+const router = useRouter();
+
+async function clickLogin() {
+  const response = await loginUser(email.value, password.value);
+
+  if(typeof response === 'object'){
+    localStorage.setItem('user', response);
+    router.push({path: '/'})
+  } else {
+    message.value = response;
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -51,6 +72,10 @@ header {
   font-size: 32px;
   font-weight: bold;
   color: #64463c;
+}
+
+.message {
+  color: #db4d51;
 }
 
 .input-wrap {

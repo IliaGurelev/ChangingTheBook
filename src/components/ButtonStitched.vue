@@ -14,12 +14,12 @@ const props = defineProps({
 <style lang="scss" scoped>
 button {
   outline: none;
-  color: #db975b;
+  color: #f8f0e4;
   padding: 1px 45px;
-  border: 2px dashed #db975b;
+  border: 2px dashed #f8f0e4;
   border-radius: 15px;
-  background-color: #f8f0e4;
-  box-shadow: 0 0 0 4px #f8f0e4, 2px 2px 4px 2px rgba(99, 99, 99, 0.5);
+  background-color: #b86040;
+  box-shadow: 0 0 0 4px #b86040, 2px 2px 4px 2px rgba(99, 99, 99, 0.5);
   transition: .1s ease-in-out, .4s color;
 }
 

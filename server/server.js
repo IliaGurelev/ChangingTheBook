@@ -30,11 +30,35 @@ pool.query('SELECT NOW()', (err, res) => {
 // Пример API-эндпойнта для получения данных из базы данных
 app.get('/api/books', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM Books');
+    const result = await pool.query('SELECT * FROM books');
     res.json(result.rows);
   } catch (err) {
     console.error('Ошибка получения данных:', err);
     res.status(500).send('Ошибка сервера');
+  }
+});
+
+app.post('/api/login', async (req, res) => {
+  try{
+    const {email, password} = req.body;
+    const result = await pool.query(`SELECT * FROM users WHERE email='${email}'`)
+
+    if(result.rows.length > 0)
+    {
+      const user = result.rows[0];
+
+      if(user.password === password)
+      {
+        return res.send(user);
+      } else {
+        return res.send('Неправильный пароль или логин');
+      }
+    }
+    else {
+      return res.send('Неправильный пароль или логин')
+    }
+  } catch (error) {
+    return res.send('Произошла ошибка, попробуйте позже');
   }
 });
 

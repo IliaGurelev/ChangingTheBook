@@ -1,6 +1,6 @@
 <template>
   <div class="recipient" :class=" props.selected ? 'recipient--selected' : ''">
-    <img class="recipient__img" :src="props.previewImage" />
+    <Avatars class="recipient__img" :avatarID="props.previewImage" />
     <div class="wrap">
       <p class="recipient__title">{{ props.name }}</p>
       <!-- <p class="recipient__last-message">Да я могу приехать на вокзал</p> -->
@@ -9,6 +9,8 @@
 </template>
 
 <script setup>
+import Avatars from '@/components/Avatars.vue';
+
 const props = defineProps({
   selected: {
     type: Boolean,
@@ -20,7 +22,7 @@ const props = defineProps({
     required: true,
   },
   previewImage: {
-    type: String,
+    type: Number,
     required: true
   }
 });

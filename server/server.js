@@ -32,7 +32,7 @@ app.get('/api/books', async (req, res) => {
     const result = await pool.query('SELECT * FROM books');
     res.json(result.rows);
   } catch (err) {
-    console.error('Ошибка получения данных:', err);
+    console.error('Ошибка получения данных BOOKS:', err);
     res.status(500).send('Ошибка сервера');
   }
 });
@@ -40,10 +40,13 @@ app.get('/api/books', async (req, res) => {
 app.post('/api/messager', async (req, res) => {
   try {
     const {id} = req.body;
-    const result = await pool.query(`SELECT messager.id, books.name, books.preview_image FROM messager INNER JOIN books ON books.id=messager.id_tovar WHERE id_buyer=${id} OR books.id_owner=${id}`);
+    const result = await pool.query(`SELECT messager.id, users.name, users.avatar_id FROM messager 
+      INNER JOIN users ON users.id=messager.id_owner
+	    INNER JOIN users AS buyer ON buyer.id = messager.id_buyer
+      WHERE id_buyer=${id} OR id_owner=${id}`);
     res.json(result.rows);
   } catch (err) {
-    console.error('Ошибка получения данных:', err);
+    console.error('Ошибка получения данных MESSAGER:', err);
     res.status(500).send('Ошибка сервера');
   }
 });

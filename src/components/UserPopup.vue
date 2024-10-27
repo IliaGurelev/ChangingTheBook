@@ -4,12 +4,12 @@
       <p class="email">{{ props.user.email }}</p>
       <button @click="$emit('logout')" class="button-exit"><span>Выйти</span></button>
     </div>
-    <img class="avatar" src="@/assets/avatar1.png" alt="">
+    <Avatars class="avatar" :avatarID="2" />
   </div>
 </template>
 
 <script setup>
-import UserIcon from '@/components/UserButton.vue';
+import Avatars from '@/components/Avatars.vue'; 
 
 const props = defineProps({
   user: {

@@ -5,7 +5,7 @@
           @click="changeSelectedRecipient(recipient.id)"
           :selected="isSelectedRecipient(recipient.id)"
           :name="recipient.name"
-          :previewImage="recipient.preview_image"
+          :previewImage="recipient.avatar_id"
         />
       </li>
   </ul>

@@ -1,10 +1,11 @@
 <template>
   <div class="wrap">
-    <img class="image" src="@/assets/avatar1.png" alt="">
+    <Avatars class="image" :avatarID="1" />
   </div>
 </template>
 
 <script setup>
+import Avatars from '@/components/Avatars.vue';
 </script>
 
 <style lang="scss" scoped>

@@ -6,8 +6,8 @@
     />
     <div class="chat">
       <div class="chat__info">
-        <img class="chat__img" :src="selectedMessage?.previewImage || '' ">
-        <h1 class="chat__title">{{selectedMessage?.name || 'Чат'}}</h1>
+        <Avatars class="chat__img" :avatarID="selectedMessager?.avatar_id || 0" />
+        <h1 class="chat__title">{{selectedMessager?.name || 'Чат'}}</h1>
       </div>
       <Messager class="chat__messager"
         :messages="messages"
@@ -22,6 +22,7 @@ import { onMounted, ref, computed, watchEffect } from 'vue';
 
 import Messager from '@/components/Messager.vue';
 import MessagerRecipientList from '@/components/MessagerRecipientList.vue';
+import Avatars from '@/components/Avatars.vue';
 
 import { fetchMessagers, fetchMessages } from '@/apiService';
 
@@ -30,7 +31,7 @@ const selectedMessagerID = ref(0);
 const userID = ref('');  
 const messages = ref([]);
 
-const selectedMessage = computed(() => {
+const selectedMessager = computed(() => {
   return recipietns.value.find(recipient => recipient.id === selectedMessagerID.value)
 })
 

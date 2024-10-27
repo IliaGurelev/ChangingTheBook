@@ -17,6 +17,39 @@ export async function fetchBooks() {
   }
 }
 
+export async function fetchMessagers(idUser_) {
+  try {
+    const response = await apiClient.post('/messager', {
+      id: idUser_
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Ошибка получения данных: ', error);
+  }
+}
+
+export async function fetchMessages(idMessages) {
+  try {
+    const response = await apiClient.post('/messages', {
+      id: idMessages
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Ошибка получения данных: ', error);
+  }
+}
+
+export async function fetchUser(userID) {
+  try {
+    const response = await apiClient.post('/user', {
+      id: userID
+    });
+    return response.data;
+  }catch (error) {
+    console.error('Ошибка получения данных: ', error);
+  }
+}
+
 export async function loginUser(email_, password_) {
     try {
       const response = await apiClient.post('/login', {

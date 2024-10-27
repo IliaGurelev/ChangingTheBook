@@ -1,39 +1,39 @@
 <template>
   <div class="messager">
-    <div class="wrap wrap--me">
-      <ul class="messages messages--me">
-        <li class="messages__item">
-          <div class="message message--me">
-            <p>Добрый день, обменяете на сборник пушкина?</p>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div class="wrap">
-      <ul class="messages">
-        <li class="messages__item">
-          <div class="message">
-            <p>Да почему бы и нет</p>
-          </div>
-        </li>
-        <li class="messages__item">
-          <div class="message">
-            <p>Да почему бы и нет</p>
-          </div>
-        </li>
-      </ul>
-    </div>
+    <ul class="messages">
+      <li 
+        class="messages__item"
+        v-for="message in props.messages" 
+        :class="message.id_sender === props.userID ? 'messages__item--me' : ''"
+        :key="message.id"
+      >
+        <div class="message">
+          <p>{{ message.text }}</p>
+        </div>
+      </li>
+    </ul>
     <div class="send-message">
       <input type="text" class="send-message__input" placeholder="Напишите сообщение...">
       <button class="send-message__button">
         <SendIcon />
       </button>
-    </div> 
+    </div>
   </div>
 </template>
 
 <script setup>
 import SendIcon from '@/components/icons/SendIcon.vue';
+
+const props = defineProps({
+  messages: {
+    type: Array,
+    required: true,
+  },
+  userID: {
+    type: Number,
+    required: true,
+  }
+})
 </script>
 
 <style lang="scss" scoped>
@@ -50,15 +50,19 @@ import SendIcon from '@/components/icons/SendIcon.vue';
   flex-direction: column;
   row-gap: 5px;
 
-  &--me {
-    flex-direction: row-reverse;
-  }
+  &__item {
+    
+    &--me {
+      margin-left: auto;
 
-  &--me .message  {
-    background-color: #8d81b5;
-    color: #fbf8f5;
-    border-bottom-right-radius: 0px;
-    border-bottom-left-radius: 20px;
+      .message {
+        background-color: #8d81b5;
+        color: #fbf8f5;
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 20px;
+        margin-left: auto;
+      }
+    }
   }
 }
 

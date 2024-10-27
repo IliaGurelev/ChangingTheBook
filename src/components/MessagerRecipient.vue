@@ -1,9 +1,9 @@
 <template>
   <div class="recipient" :class=" props.selected ? 'recipient--selected' : ''">
-    <img class="recipient__img" src="../assets/testBookImage.webp" />
+    <img class="recipient__img" :src="props.previewImage" />
     <div class="wrap">
-      <p class="recipient__title">Сборник книг 1990-х годо Сборник книг 1990-х годовСборник книг 1990-х годовСборник книг 1990-х годовв</p>
-      <p class="recipient__last-message">Да я могу приехать на вокзал</p>
+      <p class="recipient__title">{{ props.name }}</p>
+      <!-- <p class="recipient__last-message">Да я могу приехать на вокзал</p> -->
     </div>
   </div>
 </template>
@@ -14,6 +14,14 @@ const props = defineProps({
     type: Boolean,
     required: false,
     default: false
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  previewImage: {
+    type: String,
+    required: true
   }
 });
 </script>

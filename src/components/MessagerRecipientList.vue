@@ -1,20 +1,40 @@
 <template>
   <ul class="recipients">
-      <li>
-        <MessagerRecipient />
-      </li>
-      <li>
-        <MessagerRecipient :selected="true" />
+      <li v-for="recipient in props.recipients" :key="recipient.id">
+        <MessagerRecipient 
+          @click="changeSelectedRecipient(recipient.id)"
+          :selected="isSelectedRecipient(recipient.id)"
+          :name="recipient.name"
+          :previewImage="recipient.preview_image"
+        />
       </li>
   </ul>
 </template>
 
 <script setup>
+import { ref, defineEmits } from 'vue';
+
 import MessagerRecipient from '@/components/MessagerRecipient.vue';
 
 const props = defineProps({
-  
+  recipients: {
+    type: Array,
+    required: true,
+  }
 })
+
+const emit = defineEmits(['updateSelected'])
+
+const selectedRecipientID = ref(0);
+
+function changeSelectedRecipient(id) {
+  selectedRecipientID.value = id;
+  emit('updateSelected', id);
+}
+
+function isSelectedRecipient(id) {
+  return selectedRecipientID.value === id; 
+}
 </script>
 
 <style lang="scss" scoped>

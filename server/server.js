@@ -27,7 +27,6 @@ pool.query('SELECT NOW()', (err, res) => {
   }
 });
 
-// Пример API-эндпойнта для получения данных из базы данных
 app.get('/api/books', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM books');
@@ -38,13 +37,36 @@ app.get('/api/books', async (req, res) => {
   }
 });
 
-app.get('/api/messager', async (req, res) => {
+app.post('/api/messager', async (req, res) => {
   try {
     const {id} = req.body;
-    const result = await pool.query(`SELECT id, books.name, books.preview_image FROM messager INNER JOIN books ON books.id=messager.id_tovar WHERE id_buyer=${id} OR books.id_owner=${id}`);
+    const result = await pool.query(`SELECT messager.id, books.name, books.preview_image FROM messager INNER JOIN books ON books.id=messager.id_tovar WHERE id_buyer=${id} OR books.id_owner=${id}`);
     res.json(result.rows);
   } catch (err) {
     console.error('Ошибка получения данных:', err);
+    res.status(500).send('Ошибка сервера');
+  }
+});
+
+app.post('/api/messages', async(req, res) => {
+  try {
+    const {id} = req.body;
+    const result = await pool.query(`SELECT * FROM message WHERE id_messager=${ id }`);
+    res.json(result.rows);
+  } catch (error) {
+    console.error('ОШИБКА получения данных MESSAGES: ', error);
+    res.status(500).send('ошибка сервера')
+  }
+});
+
+app.post('/api/user', async (req, res) => {
+  try {
+    const {id} = req.body;
+    const query = `SELECT id, email FROM users WHERE id=${id}`
+    const result = await pool.query(query)
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Ошибка получения данных USER: ', req.body, ' ОШИБКА: ', err,);
     res.status(500).send('Ошибка сервера');
   }
 });
@@ -60,7 +82,7 @@ app.post('/api/login', async (req, res) => {
 
       if(user.password === password)
       {
-        return res.send(user);
+        return res.send(user.id);
       } else {
         return res.send('Неправильный пароль или логин');
       }

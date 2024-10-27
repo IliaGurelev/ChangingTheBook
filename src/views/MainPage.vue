@@ -6,8 +6,8 @@
       <input type="text" class="search__line" placeholder="Найти книгу" />
     </div>
     <button type="button" class="search__button">поиск</button>
-    <RouterLink to="/messages">
-      <MessagerIcon class="message-button" />
+    <RouterLink class="message-button" to="/messages">
+      <MessagerIcon />
     </RouterLink>
     <RouterLink class="login-button" to="/login" v-if="user == null">
       <ButtonStitched text="Войти" />
@@ -17,6 +17,7 @@
       class="user-popup" 
       @click="changeActiveUser(false)" 
       @logout="logoutUser"
+      :user="user"
     />
   </header>
   <main>
@@ -31,7 +32,7 @@
 import {onMounted, ref} from 'vue';
 import { RouterLink } from 'vue-router';
 
-import { fetchBooks } from '@/apiService';
+import { fetchBooks, fetchUser } from '@/apiService';
 
 import SearchIcon from '@/components/icons/SearchIcon.vue'
 import MessagerIcon from '@/components/icons/MessagerIcon.vue'
@@ -44,17 +45,19 @@ const books = ref([]);
 const user = ref(null);
 const isActiveUser = ref(false);
 
+function changeActiveUser(state) {
+  isActiveUser.value = state;
+}
+
 async function loadData() {
   try {
+    const userID = localStorage.getItem('userID')
     books.value = await fetchBooks();
+    user.value = await fetchUser(userID);
   } catch(error) {
     console.error("Ошибка загрузки данных: ", error);
   }
 } 
-
-function changeActiveUser(state) {
-  isActiveUser.value = state;
-}
 
 function logoutUser() {
   localStorage.removeItem('user');
@@ -145,11 +148,10 @@ header {
     max-width: 54px;
     width: 100%;
     cursor: pointer;
-    padding: 7px;
     transition: padding 0.3s;
 
     &:hover {
-      padding: 8px;
+      padding: 3px;
     }
   }
 

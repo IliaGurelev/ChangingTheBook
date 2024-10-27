@@ -1,7 +1,7 @@
 <template>
   <div class="popup">
     <div class="wrap">
-      <p class="email">{{ user.mail }}</p>
+      <p class="email">{{ props.user.email }}</p>
       <button @click="$emit('logout')" class="button-exit"><span>Выйти</span></button>
     </div>
     <img class="avatar" src="@/assets/avatar1.png" alt="">
@@ -11,10 +11,12 @@
 <script setup>
 import UserIcon from '@/components/UserButton.vue';
 
-const user = {
-  avatarId: 1,
-  mail: "vailade.you@bk.ru",
-}
+const props = defineProps({
+  user: {
+    type: Object,
+    required: true,
+  }
+});
 </script>
 
 <style lang="scss" scoped>

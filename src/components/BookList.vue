@@ -3,7 +3,7 @@
         <li class="list__element" v-for="book in props.books" :key="book.id">
             <a href="#">
                 <Book 
-                    :previewImage=book.previewImage
+                    :previewImage=book.preview_image
                     :name=book.name
                     :description=book.description
                 />

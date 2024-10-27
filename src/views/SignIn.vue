@@ -35,8 +35,8 @@ const router = useRouter();
 async function clickLogin() {
   const response = await loginUser(email.value, password.value);
 
-  if(typeof response === 'object'){
-    localStorage.setItem('user', response);
+  if(typeof response.id === 'number'){
+    localStorage.setItem('userID', response.id);
     router.push({path: '/'})
   } else {
     message.value = response;

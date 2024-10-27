@@ -1,19 +1,55 @@
 <template>
   <main>
-    <MessagerRecipientList />
+    <MessagerRecipientList 
+      @updateSelected="selectMessager"
+      :recipients="recipietns"
+    />
     <div class="chat">
       <div class="chat__info">
-        <img class="chat__img" src="../assets/testBookImage.webp" alt="">
-        <h1 class="chat__title">Сборник книг 1990-х годо Сборник книг 1990-х годовСборник книг 1990-х годовСборник книг 1990-х годовв</h1>
+        <img class="chat__img" :src="selectedMessage?.previewImage || '' ">
+        <h1 class="chat__title">{{selectedMessage?.name || 'Чат'}}</h1>
       </div>
-      <Messager class="chat__messager" />
+      <Messager class="chat__messager"
+        :messages="messages"
+        :userID="Number(userID)"
+      />
     </div>
   </main>
 </template>
 
 <script setup>
+import { onMounted, ref, computed, watchEffect } from 'vue';
+
 import Messager from '@/components/Messager.vue';
 import MessagerRecipientList from '@/components/MessagerRecipientList.vue';
+
+import { fetchMessagers, fetchMessages } from '@/apiService';
+
+const recipietns = ref([]);
+const selectedMessagerID = ref(0);
+const userID = ref('');  
+const messages = ref([]);
+
+const selectedMessage = computed(() => {
+  return recipietns.value.find(recipient => recipient.id === selectedMessagerID.value)
+})
+
+async function loadRecipients() {
+  recipietns.value = await fetchMessagers(userID.value);
+}
+
+async function selectMessager(idMessager) {
+  selectedMessagerID.value = idMessager;
+}
+
+onMounted(() => {
+  userID.value = localStorage.getItem('userID');
+  loadRecipients();
+})
+
+watchEffect(async () => {
+  messages.value = await fetchMessages(selectedMessagerID.value);
+})
 </script>
 
 <style lang="scss" scoped>

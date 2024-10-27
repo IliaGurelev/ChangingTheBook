@@ -38,6 +38,17 @@ app.get('/api/books', async (req, res) => {
   }
 });
 
+app.get('/api/messager', async (req, res) => {
+  try {
+    const {id} = req.body;
+    const result = await pool.query(`SELECT id, books.name, books.preview_image FROM messager INNER JOIN books ON books.id=messager.id_tovar WHERE id_buyer=${id} OR books.id_owner=${id}`);
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Ошибка получения данных:', err);
+    res.status(500).send('Ошибка сервера');
+  }
+});
+
 app.post('/api/login', async (req, res) => {
   try{
     const {email, password} = req.body;

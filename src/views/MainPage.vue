@@ -6,7 +6,9 @@
       <input type="text" class="search__line" placeholder="Найти книгу" />
     </div>
     <button type="button" class="search__button">поиск</button>
-    <MessagerIcon class="message-button" />
+    <RouterLink to="/messages">
+      <MessagerIcon class="message-button" />
+    </RouterLink>
     <RouterLink class="login-button" to="/login" v-if="user == null">
       <ButtonStitched text="Войти" />
     </RouterLink>

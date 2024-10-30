@@ -65,7 +65,7 @@ app.post('/api/messages', async(req, res) => {
 app.post('/api/user', async (req, res) => {
   try {
     const {id} = req.body;
-    const query = `SELECT id, email FROM users WHERE id=${id}`
+    const query = `SELECT id, email, name, avatar_id FROM users WHERE id=${id}`
     const result = await pool.query(query)
     res.json(result.rows[0]);
   } catch (err) {
@@ -75,26 +75,24 @@ app.post('/api/user', async (req, res) => {
 });
 
 app.post('/api/login', async (req, res) => {
-  try{
-    const {email, password} = req.body;
-    const result = await pool.query(`SELECT * FROM users WHERE email='${email}'`)
+  try {
+    const { email, password } = req.body;
+    const result = await pool.query(`SELECT * FROM users WHERE email = '${email}'`)
 
-    if(result.rows.length > 0)
-    {
+    if (result.rows.length > 0) {
       const user = result.rows[0];
 
-      if(user.password === password)
-      {
-        return res.send(user.id);
+      if (user.password === password) {
+        return res.json({ success: true, userId: user.id });
       } else {
-        return res.send('Неправильный пароль или логин');
+        return res.send({ success: false, message: 'Неправильный пароль или логин' });
       }
     }
     else {
-      return res.send('Неправильный пароль или логин')
+      return res.send({ success: false, message: 'Неправильный пароль или логин' })
     }
   } catch (error) {
-    return res.send('Произошла ошибка, попробуйте позже');
+    return res.send({ success: false, message: 'Неправильный пароль или логин' });
   }
 });
 

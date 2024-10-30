@@ -3,11 +3,15 @@
     <MessagerRecipientList 
       @updateSelected="selectMessager"
       :recipients="recipietns"
+      :selectedDefault="selectedMessagerID"
     />
     <div class="chat">
       <div class="chat__info">
-        <Avatars class="chat__img" :avatarID="selectedMessager?.avatar_id || 0" />
-        <h1 class="chat__title">{{selectedMessager?.name || 'Чат'}}</h1>
+        <div>
+          <Avatars class="chat__img" :avatarID="selectedMessager?.avatar_id || 0" />
+          <h1 class="chat__title">{{selectedMessager?.name || 'Чат'}}</h1>
+        </div>
+        <LogoStatic class="logo" />
       </div>
       <Messager class="chat__messager"
         :messages="messages"
@@ -23,11 +27,12 @@ import { onMounted, ref, computed, watchEffect } from 'vue';
 import Messager from '@/components/Messager.vue';
 import MessagerRecipientList from '@/components/MessagerRecipientList.vue';
 import Avatars from '@/components/Avatars.vue';
+import LogoStatic from '@/components/LogoMini.vue';
 
 import { fetchMessagers, fetchMessages } from '@/apiService';
 
 const recipietns = ref([]);
-const selectedMessagerID = ref(0);
+const selectedMessagerID = ref(1);
 const userID = ref('');  
 const messages = ref([]);
 
@@ -37,6 +42,8 @@ const selectedMessager = computed(() => {
 
 async function loadRecipients() {
   recipietns.value = await fetchMessagers(userID.value);
+  selectedMessagerID.value = recipietns.value[0].id;
+  console.log(selectedMessagerID.value)
 }
 
 async function selectMessager(idMessager) {
@@ -71,8 +78,13 @@ main {
 
   &__info {
     display: flex;
+    justify-content: space-between;
     column-gap: 10px;
     margin-bottom: 40px;
+
+    div {
+      display: flex;
+    }
   }
 
   &__img {

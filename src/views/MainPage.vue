@@ -12,7 +12,11 @@
     <RouterLink class="login-button" to="/login" v-if="user == null">
       <ButtonStitched text="Войти" />
     </RouterLink>
-    <UserButton  v-if="!isActiveUser && user != null" class="user-button" @click="() => changeActiveUser(true)"/>
+    <UserButton  v-if="!isActiveUser && user != null" 
+      class="user-button" 
+      @click="() => changeActiveUser(true)"
+      :avatarID="user.avatar_id"
+    />
     <UserPopup v-else-if="isActiveUser && user != null" 
       class="user-popup" 
       @click="changeActiveUser(false)" 
@@ -60,13 +64,12 @@ async function loadData() {
 } 
 
 function logoutUser() {
-  localStorage.removeItem('user');
+  localStorage.removeItem('userID');
   user.value = null;
 }
 
 onMounted(() => {
   loadData();
-  user.value = localStorage.getItem('user');
 })
 </script>
 

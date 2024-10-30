@@ -20,12 +20,17 @@ const props = defineProps({
   recipients: {
     type: Array,
     required: true,
+  },
+  selectedDefault: {
+    type: Number,
+    required: false,
+    default: 0,
   }
 })
 
 const emit = defineEmits(['updateSelected'])
 
-const selectedRecipientID = ref(0);
+const selectedRecipientID = ref(props.selectedRecipient);
 
 function changeSelectedRecipient(id) {
   selectedRecipientID.value = id;
@@ -33,6 +38,7 @@ function changeSelectedRecipient(id) {
 }
 
 function isSelectedRecipient(id) {
+  console.log(selectedRecipientID.value);
   return selectedRecipientID.value === id; 
 }
 </script>

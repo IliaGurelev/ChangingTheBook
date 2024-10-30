@@ -35,11 +35,11 @@ const router = useRouter();
 async function clickLogin() {
   const response = await loginUser(email.value, password.value);
 
-  if(typeof response.id === 'number'){
-    localStorage.setItem('userID', response.id);
+  if(response.success){
+    localStorage.setItem('userID', response.userId);
     router.push({path: '/'})
   } else {
-    message.value = response;
+    message.value = response.message;
   }
 }
 </script>

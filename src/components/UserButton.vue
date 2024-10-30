@@ -1,11 +1,18 @@
 <template>
   <div class="wrap">
-    <Avatars class="image" :avatarID="1" />
+    <Avatars class="image" :avatarID="props.avatarID" />
   </div>
 </template>
 
 <script setup>
 import Avatars from '@/components/Avatars.vue';
+
+const props = defineProps({
+  avatarID: {
+    type: Number,
+    required: true,
+  }
+});
 </script>
 
 <style lang="scss" scoped>

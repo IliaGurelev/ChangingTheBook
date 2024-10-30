@@ -18,5 +18,7 @@ const pathImage = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-
+img {
+  object-fit: fill;
+}
 </style>

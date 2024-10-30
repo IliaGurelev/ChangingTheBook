@@ -1,11 +1,14 @@
 <template>
   <div class="popup">
     <div class="wrap">
-      <p class="email">{{ props.user.email }}</p>
+      <div>
+        <p class="email">{{ props.user.name }}</p>
+        <p class="email">{{ props.user.email }}</p>
+      </div>
       <button @click="$emit('logout')" class="button-exit"><span>Выйти</span></button>
     </div>
-    <Avatars class="avatar" :avatarID="2" />
-  </div>
+    <Avatars class="avatar" :avatarID="props.user.avatar_id" />
+  </div> 
 </template>
 
 <script setup>

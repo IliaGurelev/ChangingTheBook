@@ -11,11 +11,14 @@
           <Avatars class="chat__img" :avatarID="selectedMessager?.avatar_id || 0" />
           <h1 class="chat__title">{{selectedMessager?.name || 'Чат'}}</h1>
         </div>
-        <LogoStatic class="logo" />
+        <RouterLink to="/">
+          <LogoStatic class="logo" />
+        </RouterLink>
       </div>
       <Messager class="chat__messager"
         :messages="messages"
         :userID="Number(userID)"
+        @send-message="clickSend"
       />
     </div>
   </main>
@@ -23,13 +26,14 @@
 
 <script setup>
 import { onMounted, ref, computed, watchEffect } from 'vue';
+import { RouterLink } from 'vue-router';
 
 import Messager from '@/components/Messager.vue';
 import MessagerRecipientList from '@/components/MessagerRecipientList.vue';
 import Avatars from '@/components/Avatars.vue';
 import LogoStatic from '@/components/LogoMini.vue';
 
-import { fetchMessagers, fetchMessages } from '@/apiService';
+import { fetchMessagers, fetchMessages, sendMessage } from '@/apiService';
 
 const recipietns = ref([]);
 const selectedMessagerID = ref(1);
@@ -40,10 +44,22 @@ const selectedMessager = computed(() => {
   return recipietns.value.find(recipient => recipient.id === selectedMessagerID.value)
 })
 
+async function clickSend(text) {
+  if(text != "") {
+    const message = await sendMessage(selectedMessagerID.value, userID.value, text);
+    if(message) {
+      messages.value.push({
+        id_messager: selectedMessagerID.value,
+        id_sender: Number(userID.value),
+        text: text
+      });
+    }
+  }
+}
+
 async function loadRecipients() {
   recipietns.value = await fetchMessagers(userID.value);
   selectedMessagerID.value = recipietns.value[0].id;
-  console.log(selectedMessagerID.value)
 }
 
 async function selectMessager(idMessager) {
@@ -90,7 +106,7 @@ main {
   &__img {
     width: 80px;
     height: 80px;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 50%;
   }
 

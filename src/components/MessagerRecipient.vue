@@ -42,8 +42,8 @@ const props = defineProps({
   }
 
   &__img {
-    object-fit: cover;
-    max-width: 70px;
+    object-fit: contain;
+    width: 70px;
     height: 70px;
     border-radius: 50%;
   }

@@ -6,7 +6,7 @@
       <input type="text" class="search__line" placeholder="Найти книгу" />
     </div>
     <button type="button" class="search__button">поиск</button>
-    <RouterLink class="message-button" to="/messages">
+    <RouterLink v-if="user != null"  class="message-button" to="/messages">
       <MessagerIcon />
     </RouterLink>
     <RouterLink class="login-button" to="/login" v-if="user == null">
@@ -55,9 +55,12 @@ function changeActiveUser(state) {
 
 async function loadData() {
   try {
-    const userID = localStorage.getItem('userID')
     books.value = await fetchBooks();
-    user.value = await fetchUser(userID);
+    const userID = localStorage.getItem('userID')
+    if(userID != undefined)
+    {
+      user.value = await fetchUser(userID);
+    }
   } catch(error) {
     console.error("Ошибка загрузки данных: ", error);
   }

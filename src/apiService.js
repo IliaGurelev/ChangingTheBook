@@ -62,3 +62,17 @@ export async function loginUser(email_, password_) {
     console.error(error);
   }
 } 
+
+export async function sendMessage(id_messager, id_sender, text) {
+  try {
+    const response = await apiClient.post('/add-message', {
+      id_messager: id_messager,
+      id_sender: id_sender,
+      text: text
+    });
+    
+    return response.data;
+  }catch (error) {
+    console.error(error);
+  }
+}

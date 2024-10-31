@@ -62,6 +62,17 @@ app.post('/api/messages', async(req, res) => {
   }
 });
 
+app.post('/api/add-message', async (req, res) => {
+  try {
+    const { id_messager, id_sender, text} = req.body;
+    const result = await pool.query(`INSERT INTO message (id, id_messager, id_sender, text) VALUES (default, ${id_messager}, ${id_sender}, '${text}')`);
+    res.json(true);
+  } catch (error) {
+    console.error('ОШИБКА добовления данных ADD-MESSAGE: ', error);
+    res.status(500).send('ошибка сервера')
+  }
+});
+
 app.post('/api/user', async (req, res) => {
   try {
     const {id} = req.body;

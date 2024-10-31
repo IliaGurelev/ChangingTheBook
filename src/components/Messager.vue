@@ -13,8 +13,12 @@
       </li>
     </ul>
     <div class="send-message">
-      <input type="text" class="send-message__input" placeholder="Напишите сообщение...">
-      <button class="send-message__button">
+      <input 
+        type="text" 
+        class="send-message__input" 
+        placeholder="Напишите сообщение..."
+        v-model="textMessage"      >
+      <button class="send-message__button" @click="$emit('sendMessage', textMessage), clearMessage()">
         <SendIcon />
       </button>
     </div>
@@ -22,6 +26,8 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
 import SendIcon from '@/components/icons/SendIcon.vue';
 
 const props = defineProps({
@@ -34,6 +40,12 @@ const props = defineProps({
     required: true,
   }
 })
+
+const textMessage = ref('');
+
+const clearMessage = () => {
+  textMessage.value = "";
+}
 </script>
 
 <style lang="scss" scoped>

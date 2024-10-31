@@ -38,7 +38,6 @@ function changeSelectedRecipient(id) {
 }
 
 function isSelectedRecipient(id) {
-  console.log(selectedRecipientID.value);
   return selectedRecipientID.value === id; 
 }
 </script>

@@ -34,7 +34,7 @@ const props = defineProps({
         margin-bottom: 7px;
         border-radius: 3px;
         background-color: #e9e5e2;
-        width: 100%;
+        width: 236px;
         height: 236px;
         overflow: hidden;
     }
@@ -60,6 +60,16 @@ const props = defineProps({
     &__description {
         color: #ed5d5f;
         font-size: 12px;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -moz-box;
+        -moz-box-orient: vertical;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        line-clamp: 3;
+        box-orient: vertical;
     }
 }
 </style>

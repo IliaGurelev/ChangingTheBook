@@ -37,10 +37,87 @@ app.get('/api/books', async (req, res) => {
   }
 });
 
+app.post('/api/books', async(req, res) => {
+  try {
+    const {idUser} = req.body;
+    const result = await pool.query(`SELECT * FROM books WHERE id_owner=${idUser}`);
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Ошибка получения данных BOOKS POST: ', err);
+    res.status(500).send('Ошибка сервера');
+  }
+})
+
+app.post('/api/add-books', async (req, res) => {
+  try {
+    const { name, preview_image, description, id_owner } = req.body;
+
+    const insertQuery = `
+      INSERT INTO books (id, name, preview_image, description, id_owner) 
+      VALUES (default, $1, $2, $3, $4) 
+      RETURNING *
+    `;
+    const insertResult = await pool.query(insertQuery, [name, preview_image, description, id_owner]);
+
+    res.json(insertResult.rows[0]);
+  } catch (err) {
+    console.error('Ошибка получения данных ADD-BOOKS:', err);
+    res.status(500).send('Ошибка сервера');
+  }
+})
+
+// PUT - Обновление данных книги
+app.put('/api/update-book/:id', async (req, res) => {
+  try {
+    const { name, preview_image, description } = req.body;
+    const bookId = req.params.id;
+
+    const updateQuery = `
+      UPDATE books
+      SET name = $1, preview_image = $2, description = $3
+      WHERE id = $4
+      RETURNING *
+    `;
+    const updateResult = await pool.query(updateQuery, [name, preview_image, description, bookId]);
+
+    if (updateResult.rows.length === 0) {
+      return res.status(404).send('Книга не найдена');
+    }
+
+    res.json(updateResult.rows[0]);
+  } catch (err) {
+    console.error('Ошибка обновления книги:', err);
+    res.status(500).send('Ошибка сервера');
+  }
+});
+
+// DELETE - Удаление книги
+app.delete('/api/delete-book/:id', async (req, res) => {
+  try {
+    const bookId = req.params.id;
+
+    const deleteQuery = `
+      DELETE FROM books
+      WHERE id = $1
+      RETURNING *
+    `;
+    const deleteResult = await pool.query(deleteQuery, [bookId]);
+
+    if (deleteResult.rows.length === 0) {
+      return res.status(404).send('Книга не найдена');
+    }
+
+    res.json({ message: 'Книга успешно удалена', deletedBook: deleteResult.rows[0] });
+  } catch (err) {
+    console.error('Ошибка удаления книги:', err);
+    res.status(500).send('Ошибка сервера');
+  }
+});
+
 app.post('/api/messager', async (req, res) => {
   try {
     const {id} = req.body;
-    const result = await pool.query(`SELECT messager.id, users.name, users.avatar_id FROM messager 
+    const result = await pool.query(`SELECT messager.id, id_owner, id_buyer, users.name AS name_owner, users.avatar_id AS avatar_owner, buyer.name AS name_buyer, buyer.avatar_id AS avatar_buyer FROM messager 
       INNER JOIN users ON users.id=messager.id_owner
 	    INNER JOIN users AS buyer ON buyer.id = messager.id_buyer
       WHERE id_buyer=${id} OR id_owner=${id}`);
@@ -50,6 +127,36 @@ app.post('/api/messager', async (req, res) => {
     res.status(500).send('Ошибка сервера');
   }
 });
+
+app.post('/api/add-messager', async (req, res) => {
+  try {
+    const { id_owner, id_buyer } = req.body;
+
+    const checkQuery = `
+      SELECT * FROM messager 
+      WHERE (id_owner = $1 AND id_buyer = $2) 
+         OR (id_owner = $2 AND id_buyer = $1)
+    `;
+    const checkResult = await pool.query(checkQuery, [id_owner, id_buyer]);
+
+    if (checkResult.rows.length > 0) {
+      return res.json(checkResult.rows[0]);
+    }
+
+    const insertQuery = `
+      INSERT INTO messager (id, id_owner, id_buyer) 
+      VALUES (default, $1, $2) 
+      RETURNING *
+    `;
+    const insertResult = await pool.query(insertQuery, [id_owner, id_buyer]);
+
+    res.json(insertResult.rows[0]);
+  } catch (err) {
+    console.error('Ошибка получения данных ADD-MESSAGER:', err);
+    res.status(500).send('Ошибка сервера');
+  }
+});
+
 
 app.post('/api/messages', async(req, res) => {
   try {
@@ -104,6 +211,30 @@ app.post('/api/login', async (req, res) => {
     }
   } catch (error) {
     return res.send({ success: false, message: 'Неправильный пароль или логин' });
+  }
+});
+
+app.post('/api/signup', async (req, res) => {
+  try {
+    const { email, password, name, avatar_id } = req.body;
+
+    // Проверка, существует ли уже такой email
+    const emailCheck = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    if (emailCheck.rows.length > 0) {
+      return res.json({ success: false, message: 'Почта уже занята' });
+    }
+
+    // Вставка нового пользователя и возврат его id
+    const result = await pool.query(
+      'INSERT INTO users (email, password, name, avatar_id) VALUES ($1, $2, $3, $4) RETURNING id',
+      [email, password, name, avatar_id]
+    );
+
+    // Возвращаем успех и userId
+    return res.json({ success: true, userId: result.rows[0].id });
+  } catch (error) {
+    console.error('Ошибка регистрации:', error);
+    return res.json({ success: false, message: 'Ошибка регистрации' });
   }
 });
 

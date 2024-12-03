@@ -21,12 +21,19 @@
       class="user-popup" 
       @click="changeActiveUser(false)" 
       @logout="logoutUser"
+      @my-books="toMyBooks"
       :user="user"
     />
   </header>
   <main>
     <BookList 
       :books="books"
+      @clickBook="clickBook"
+    />
+    <BookPopup 
+      v-if="isActivePopupBook" 
+      :book="selectedBook"
+      @sendMessage="sendMessage"
     />
   </main>
 </div>
@@ -34,9 +41,9 @@
 
 <script setup>
 import {onMounted, ref} from 'vue';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 
-import { fetchBooks, fetchUser } from '@/apiService';
+import { fetchBooks, fetchUser, addMessager } from '@/apiService';
 
 import SearchIcon from '@/components/icons/SearchIcon.vue'
 import MessagerIcon from '@/components/icons/MessagerIcon.vue'
@@ -44,10 +51,19 @@ import BookList from '@/components/BookList.vue'
 import UserButton from '@/components/UserButton.vue';
 import UserPopup from '@/components/UserPopup.vue';
 import ButtonStitched from '@/components/ButtonStitched.vue';
+import BookPopup from '@/components/BookPopup.vue';
 
 const books = ref([]);
 const user = ref(null);
 const isActiveUser = ref(false);
+const isActivePopupBook = ref(false);
+const selectedBook = ref({});
+const router = useRouter();
+
+const clickBook = (book) => {
+  isActivePopupBook.value = true;
+  selectedBook.value = book;
+}
 
 function changeActiveUser(state) {
   isActiveUser.value = state;
@@ -60,15 +76,27 @@ async function loadData() {
     if(userID != undefined)
     {
       user.value = await fetchUser(userID);
+      books.value = books.value.filter(book => book.id_owner !== Number(userID));
+      console.log(userID);
+      console.log(books.value)
     }
   } catch(error) {
     console.error("Ошибка загрузки данных: ", error);
   }
 } 
 
+async function sendMessage(id_owner) {
+  await addMessager(id_owner, user.value.id)
+  router.push({name: 'messages'});
+}
+
 function logoutUser() {
   localStorage.removeItem('userID');
   user.value = null;
+}
+
+function toMyBooks() {
+  router.push({name: 'user'});
 }
 
 onMounted(() => {

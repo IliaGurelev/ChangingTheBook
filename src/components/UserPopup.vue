@@ -1,11 +1,14 @@
 <template>
   <div class="popup">
     <div class="wrap">
-      <div>
+      <div class="flex-column">
         <p class="email">{{ props.user.name }}</p>
         <p class="email">{{ props.user.email }}</p>
       </div>
-      <button @click="$emit('logout')" class="button-exit"><span>Выйти</span></button>
+      <div class="flex-column">
+        <button @click="$emit('my-books')" class="button button--my-books"><span>Мои объявления</span></button>
+        <button @click="$emit('logout')" class="button"><span>Выйти</span></button>
+      </div>
     </div>
     <Avatars class="avatar" :avatarID="props.user.avatar_id" />
   </div> 
@@ -41,8 +44,7 @@ const props = defineProps({
   row-gap: 80px;
 }
 
-.button-exit {
-  max-width: 100px;
+.button {
   font-size: 14px;
   font-weight: bold;
   color: #f66;
@@ -54,6 +56,17 @@ const props = defineProps({
   &:hover {
     span::after {
       width: 100%;
+    }
+  }
+
+  &--my-books {
+    color: rgb(102, 150, 255);
+    border-color: rgb(102, 150, 255);
+
+    span {
+      &::after {
+        background-color: rgb(102, 150, 255) !important;
+      }
     }
   }
 
@@ -72,6 +85,12 @@ const props = defineProps({
       transition: width 0.3s ease;
     }
   }
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
 }
 
 .avatar {

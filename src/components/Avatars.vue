@@ -1,5 +1,5 @@
 <template>
-  <img :src="pathImage" alt="">
+  <img v-if="props.avatarID != 0" :src="pathImage" alt="">
 </template>
 
 <script setup>

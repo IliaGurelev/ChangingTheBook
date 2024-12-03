@@ -9,7 +9,7 @@
       <div class="chat__info">
         <div>
           <Avatars class="chat__img" :avatarID="selectedMessager?.avatar_id || 0" />
-          <h1 class="chat__title">{{selectedMessager?.name || 'Чат'}}</h1>
+          <h2 class="chat__title">{{selectedMessager?.name || 'Чат'}}</h2>
         </div>
         <RouterLink to="/">
           <LogoStatic class="logo" />
@@ -59,6 +59,24 @@ async function clickSend(text) {
 
 async function loadRecipients() {
   recipietns.value = await fetchMessagers(userID.value);
+  recipietns.value = recipietns.value.map(recipient => {
+    if (recipient.id_owner === userID.value) {
+      return {
+        id: recipient.id,
+        id_recipient: recipient.id_buyer,
+        name: recipient.name_buyer,
+        avatar_id: recipient.avatar_buyer
+      };
+    } else if (recipient.id_buyer === userID.value) {
+      return {
+        id: recipient.id,
+        id_recipient: recipient.id_owner,
+        name: recipient.name_owner,
+        avatar_id: recipient.avatar_owner
+      };
+    }
+    return null;
+  }).filter(Boolean);
   selectedMessagerID.value = recipietns.value[0].id;
 }
 
@@ -67,7 +85,7 @@ async function selectMessager(idMessager) {
 }
 
 onMounted(() => {
-  userID.value = localStorage.getItem('userID');
+  userID.value = Number(localStorage.getItem('userID'));
   loadRecipients();
 })
 
